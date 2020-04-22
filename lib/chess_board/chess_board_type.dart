@@ -4,3 +4,11 @@ enum PieceColor {
   White,
   Black,
 }
+
+/// Enum which stores board types
+enum BoardType {
+  brown,
+  darkBrown,
+  orange,
+  green,
+}

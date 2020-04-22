@@ -1,3 +1,4 @@
+import 'package:chess_game/models/board_model.dart';
 import 'package:flutter/material.dart';
 
 import 'board_square.dart';
@@ -6,8 +7,10 @@ import 'board_square.dart';
 class ChessBoardRank extends StatelessWidget {
   /// The list of squares in the rank
   final List<String> children;
-
-  ChessBoardRank({this.children});
+  final double size;
+  final BoardModel boardModel;
+  ChessBoardRank(
+      {this.children, @required this.boardModel, @required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,8 @@ class ChessBoardRank extends StatelessWidget {
       child: Row(
         children: children
             .map(
-              (squareName) => BoardSquare(squareName: squareName),
+              (squareName) => BoardSquare(
+                  squareName: squareName, boardModel: boardModel, size: size),
             )
             .toList(),
       ),

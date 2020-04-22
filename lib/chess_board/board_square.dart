@@ -1,80 +1,68 @@
-import 'package:chess_game/blocs/chess_board_bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:async';
 import 'package:chess_game/models/board_model.dart';
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:chess/chess.dart' as chess;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// A single square on the chessboard
 class BoardSquare extends StatelessWidget {
   /// The square name (a2, d3, e4, etc.)
   final squareName;
-
-  BoardSquare({this.squareName});
+  final double size;
+  final BoardModel boardModel;
+  BoardSquare(
+      {this.squareName, @required this.boardModel, @required this.size});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChessBoardBloc, ChessBoardState>(
-      builder: (context, state) {
-        final model = state is ChessBoardLoadSussess ? state.boardModel : null;
-        if (model == null) {
-          return Container();
-        }
-        return Expanded(
-          flex: 1,
-          child: DragTarget(
-            builder: (context, accepted, rejected) {
-              return model.game.get(squareName) != null
-                  ? Draggable(
-                      child: _getImageToDisplay(
-                          size: model.size / 8, model: model),
-                      feedback: _getImageToDisplay(
-                          size: (1.2 * (model.size / 8)), model: model),
-                      onDragCompleted: () {},
-                      data: [
-                        squareName,
-                        model.game.get(squareName).type.toUpperCase(),
-                        model.game.get(squareName).color,
-                      ],
-                    )
-                  : Container();
-            },
-            onWillAccept: (willAccept) {
-              return model.enableUserMoves ? true : false;
-            },
-            onAccept: (List moveInfo) {
-              // A way to check if move occurred.
-              chess.Color moveColor = model.game.turn;
+    return Expanded(
+      flex: 1,
+      child: DragTarget(
+        builder: (context, accepted, rejected) {
+          return boardModel.game.get(squareName) != null
+              ? Draggable(
+                  child: _getImageToDisplay(size: size / 8, model: boardModel),
+                  feedback: _getImageToDisplay(
+                      size: (1.2 * (size / 8)), model: boardModel),
+                  onDragCompleted: () {},
+                  data: [
+                    squareName,
+                    boardModel.game.get(squareName).type.toUpperCase(),
+                    boardModel.game.get(squareName).color,
+                  ],
+                )
+              : Container();
+        },
+        onWillAccept: (willAccept) {
+          return boardModel.enableUserMoves ? true : false;
+        },
+        onAccept: (List moveInfo) {
+          // A way to check if move occurred.
+          chess.Color moveColor = boardModel.game.turn;
 
-              if (moveInfo[1] == "P" &&
-                  ((moveInfo[0][1] == "7" &&
-                          squareName[1] == "8" &&
-                          moveInfo[2] == chess.Color.WHITE) ||
-                      (moveInfo[0][1] == "2" &&
-                          squareName[1] == "1" &&
-                          moveInfo[2] == chess.Color.BLACK))) {
-                _promotionDialog(context).then((value) {
-                  model.game.move({
-                    "from": moveInfo[0],
-                    "to": squareName,
-                    "promotion": value
-                  });
-                  model.refreshBoard();
-                });
-              } else {
-                model.game.move({"from": moveInfo[0], "to": squareName});
-              }
-              if (model.game.turn != moveColor) {
-                final move =
-                    moveInfo[1] == "P" ? squareName : moveInfo[1] + squareName;
-              }
-              model.refreshBoard();
-            },
-          ),
-        );
-      },
+          if (moveInfo[1] == "P" &&
+              ((moveInfo[0][1] == "7" &&
+                      squareName[1] == "8" &&
+                      moveInfo[2] == chess.Color.WHITE) ||
+                  (moveInfo[0][1] == "2" &&
+                      squareName[1] == "1" &&
+                      moveInfo[2] == chess.Color.BLACK))) {
+            _promotionDialog(context).then((value) {
+              boardModel.game.move(
+                  {"from": moveInfo[0], "to": squareName, "promotion": value});
+              boardModel.refreshBoard();
+            });
+          } else {
+            boardModel.game.move({"from": moveInfo[0], "to": squareName});
+          }
+          if (boardModel.game.turn != moveColor) {
+            final move =
+                moveInfo[1] == "P" ? squareName : moveInfo[1] + squareName;
+          }
+          boardModel.refreshBoard();
+        },
+      ),
     );
   }
 

@@ -26,7 +26,36 @@ void main() async {
         routes: {
           // When navigating to the "/" route, build the FirstScreen widget.
           '/': (context) {
-            return MyHomePage();
+            return BlocBuilder<ChessBoardBloc, ChessBoardState>(
+                builder: (context, state) {
+              if (state is ChessBoardLoadSussess) {
+                return Scaffold(
+                  appBar: AppBar(),
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ChessBoard(
+                          onMove: (move) {
+                            print(move);
+                          },
+                          onCheck: (color) {
+                            print(color);
+                          },
+                          onCheckMate: (color) {
+                            print(color);
+                          },
+                          onDraw: () {},
+                          size: MediaQuery.of(context).size.width,
+                          boardModel: state.boardModel,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            });
           },
           // When navigating to the "/second" route, build the SecondScreen widget.
           // '/video': (context) => VideoApp(),
@@ -34,39 +63,4 @@ void main() async {
       ),
     ),
   );
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => new _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ChessBoard(
-              onMove: (move) {
-                print(move);
-              },
-              onCheck: (color) {
-                print(color);
-              },
-              onCheckMate: (color) {
-                print(color);
-              },
-              onDraw: () {},
-              size: MediaQuery.of(context).size.width,
-              enableUserMoves: true,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }

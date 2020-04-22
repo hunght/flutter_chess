@@ -21,6 +21,8 @@ class ChessBoardBloc extends Bloc<ChessBoardEvent, ChessBoardState> {
   }
 
   Stream<ChessBoardState> _mapLoadAccountsToState() async* {
-    yield ChessBoardLoadSussess(boardModel: BoardModel(size: 8));
+    yield ChessBoardLoadSussess(
+        boardModel:
+            BoardModel(whiteSideTowardsUser: true, enableUserMoves: true));
   }
 }

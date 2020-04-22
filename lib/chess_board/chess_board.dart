@@ -86,14 +86,6 @@ var whiteSquareList = [
   ],
 ];
 
-/// Enum which stores board types
-enum BoardType {
-  brown,
-  darkBrown,
-  orange,
-  green,
-}
-
 /// The Chessboard Widget
 class ChessBoard extends StatefulWidget {
   /// Size of chessboard
@@ -110,25 +102,14 @@ class ChessBoard extends StatefulWidget {
 
   /// Callback for when the game is a draw
   final VoidCallback onDraw;
-
-  /// A boolean which notes if white board side is towards users
-  final bool whiteSideTowardsUser;
-
-  /// A boolean which checks if the user should be allowed to make moves
-  final bool enableUserMoves;
-
-  /// The color type of the board
-  final BoardType boardType;
-
+  final BoardModel boardModel;
   ChessBoard({
     this.size = 200.0,
-    this.whiteSideTowardsUser = true,
     @required this.onMove,
     @required this.onCheckMate,
     @required this.onCheck,
     @required this.onDraw,
-    this.enableUserMoves = true,
-    this.boardType = BoardType.brown,
+    @required this.boardModel,
   });
 
   @override
@@ -146,14 +127,14 @@ class _ChessBoardState extends State<ChessBoard> {
           Container(
             height: widget.size,
             width: widget.size,
-            child: _getBoardImage(),
+            color: Colors.greenAccent,
           ),
           //Overlaying draggables/ dragTargets onto the squares
           Center(
             child: Container(
               height: widget.size,
               width: widget.size,
-              child: buildChessBoard(),
+              child: buildChessBoard(widget.boardModel),
             ),
           )
         ],
@@ -162,51 +143,23 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   /// Builds the board
-  Widget buildChessBoard() {
+  Widget buildChessBoard(BoardModel boardModel) {
     return Column(
-      children: widget.whiteSideTowardsUser
+      children: widget.boardModel.whiteSideTowardsUser
           ? whiteSquareList.map((row) {
               return ChessBoardRank(
+                boardModel: boardModel,
                 children: row,
+                size: widget.size,
               );
             }).toList()
           : whiteSquareList.reversed.map((row) {
               return ChessBoardRank(
+                boardModel: boardModel,
+                size: widget.size,
                 children: row.reversed.toList(),
               );
             }).toList(),
     );
-  }
-
-  /// Returns the board image
-  Image _getBoardImage() {
-    switch (widget.boardType) {
-      case BoardType.brown:
-        return Image.asset(
-          "assets/images/brown_board.png",
-          package: 'flutter_chess_board',
-          fit: BoxFit.cover,
-        );
-      case BoardType.darkBrown:
-        return Image.asset(
-          "assets/images/dark_brown_board.png",
-          package: 'flutter_chess_board',
-          fit: BoxFit.cover,
-        );
-      case BoardType.green:
-        return Image.asset(
-          "assets/images/green_board.png",
-          package: 'flutter_chess_board',
-          fit: BoxFit.cover,
-        );
-      case BoardType.orange:
-        return Image.asset(
-          "assets/images/orange_board.png",
-          package: 'flutter_chess_board',
-          fit: BoxFit.cover,
-        );
-      default:
-        return null;
-    }
   }
 }

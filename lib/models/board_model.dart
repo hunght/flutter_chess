@@ -6,14 +6,12 @@ typedef Null CheckMateCallback(PieceColor color);
 typedef Null CheckCallback(PieceColor color);
 
 class BoardModel {
-  /// The size of the board (The board is a square)
-  double size;
-
   /// If the white side of the board is towards the user
   bool whiteSideTowardsUser;
 
   /// User moves can be enabled or disabled by this property
   bool enableUserMoves;
+  BoardType boardType;
 
   /// Creates a logical game
   chess.Chess game = chess.Chess();
@@ -34,5 +32,5 @@ class BoardModel {
     // notifyListeners();
   }
 
-  BoardModel({this.size, this.whiteSideTowardsUser, this.enableUserMoves});
+  BoardModel({this.whiteSideTowardsUser, this.enableUserMoves, this.boardType});
 }
