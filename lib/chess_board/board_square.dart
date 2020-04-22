@@ -8,7 +8,7 @@ import 'package:chess/chess.dart' as chess;
 /// A single square on the chessboard
 class BoardSquare extends StatelessWidget {
   /// The square name (a2, d3, e4, etc.)
-  final squareName;
+  final String squareName;
   final double size;
   final BoardModel boardModel;
   BoardSquare(
@@ -21,18 +21,36 @@ class BoardSquare extends StatelessWidget {
       child: DragTarget(
         builder: (context, accepted, rejected) {
           return boardModel.game.get(squareName) != null
-              ? Draggable(
-                  child: _getImageToDisplay(size: size / 8, model: boardModel),
-                  feedback: _getImageToDisplay(
-                      size: (1.2 * (size / 8)), model: boardModel),
-                  onDragCompleted: () {},
-                  data: [
-                    squareName,
-                    boardModel.game.get(squareName).type.toUpperCase(),
-                    boardModel.game.get(squareName).color,
+              ? Stack(
+                  children: <Widget>[
+                    Container(
+                      color: boardModel.game.square_color(squareName) == 'light'
+                          ? Colors.lightBlue
+                          : Colors.blue,
+                      width: size / 8,
+                      height: size / 8,
+                    ),
+                    Draggable(
+                      child:
+                          _getImageToDisplay(size: size / 8, model: boardModel),
+                      feedback: _getImageToDisplay(
+                          size: (1.2 * (size / 8)), model: boardModel),
+                      onDragCompleted: () {},
+                      data: [
+                        squareName,
+                        boardModel.game.get(squareName).type.toUpperCase(),
+                        boardModel.game.get(squareName).color,
+                      ],
+                    ),
                   ],
                 )
-              : Container();
+              : Container(
+                  color: boardModel.game.square_color(squareName) == 'light'
+                      ? Colors.lightBlue
+                      : Colors.blue,
+                  width: size / 8,
+                  height: size / 8,
+                );
         },
         onWillAccept: (willAccept) {
           return boardModel.enableUserMoves ? true : false;
