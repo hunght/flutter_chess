@@ -1,7 +1,13 @@
 part of 'chess_board_bloc.dart';
 
+enum EventTypeSussess {
+  promotionDialog,
+  darkBrown,
+}
+
 abstract class ChessBoardState extends Equatable {
-  const ChessBoardState();
+  final BoardModel boardModel;
+  const ChessBoardState({this.boardModel});
 }
 
 class ChessBoardInitial extends ChessBoardState {
@@ -10,9 +16,14 @@ class ChessBoardInitial extends ChessBoardState {
 }
 
 class ChessBoardLoadSussess extends ChessBoardState {
+  final EventTypeSussess eventTypeSussess;
+  final String from;
+  final String to;
   final BoardModel boardModel;
 
-  ChessBoardLoadSussess({this.boardModel}) : super();
+  ChessBoardLoadSussess(
+      {this.boardModel, this.eventTypeSussess, this.from, this.to})
+      : super();
   @override
-  List<Object> get props => [boardModel];
+  List<Object> get props => [boardModel, eventTypeSussess];
 }

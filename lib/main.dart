@@ -1,8 +1,9 @@
 import 'package:chess_game/blocs/chess_board_bloc.dart';
-import 'package:chess_game/chess_board/chess_board.dart';
 import 'package:chess_game/utils/supervisor_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'chess_board/chess_board_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,36 +27,7 @@ void main() async {
         routes: {
           // When navigating to the "/" route, build the FirstScreen widget.
           '/': (context) {
-            return BlocBuilder<ChessBoardBloc, ChessBoardState>(
-                builder: (context, state) {
-              if (state is ChessBoardLoadSussess) {
-                return Scaffold(
-                  appBar: AppBar(),
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        ChessBoard(
-                          onMove: (move) {
-                            print(move);
-                          },
-                          onCheck: (color) {
-                            print(color);
-                          },
-                          onCheckMate: (color) {
-                            print(color);
-                          },
-                          onDraw: () {},
-                          size: MediaQuery.of(context).size.width,
-                          boardModel: state.boardModel,
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return Container();
-            });
+            return ChessBoardScreen();
           },
           // When navigating to the "/second" route, build the SecondScreen widget.
           // '/video': (context) => VideoApp(),
