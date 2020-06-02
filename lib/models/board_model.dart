@@ -1,4 +1,5 @@
 import 'package:chess_game/chess_board/chess_board_type.dart';
+import 'package:chess/chess.dart';
 
 typedef Null MoveCallback(String moveNotation);
 typedef Null CheckMateCallback(PieceColor color);
@@ -9,9 +10,10 @@ class BoardModel {
   bool whiteSideTowardsUser;
 
   /// User moves can be enabled or disabled by this property
-  bool enableUserMoves;
+  bool enableUserMoves = false;
   BoardType boardType;
   String chessFEN;
+  Chess game;
 
   /// Refreshes board
   // void refreshBoard() {
@@ -33,5 +35,6 @@ class BoardModel {
       {this.whiteSideTowardsUser,
       this.enableUserMoves,
       this.boardType,
+      this.game,
       this.chessFEN});
 }

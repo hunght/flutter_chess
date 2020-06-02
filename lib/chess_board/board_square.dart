@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chess/chess.dart';
 import 'package:flutter/material.dart';
 import 'package:chess_game/models/board_model.dart';
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
@@ -10,7 +11,7 @@ class BoardSquare extends StatelessWidget {
   final double size;
   final BoardModel boardModel;
   final bool isLightColor;
-  final String piece;
+  final Piece piece;
   final Function({String from, String to}) onAcceptMove;
   BoardSquare({
     this.squareName,
@@ -68,19 +69,14 @@ class BoardSquare extends StatelessWidget {
   Widget _getImageToDisplay({double size, BoardModel model}) {
     Widget imageToDisplay = Container();
 
-    if (piece.isEmpty) {
+    if (piece == null) {
       return Container();
     }
 
-    // String piece = model.game
-    //         .get(squareName)
-    //         .color
-    //         .toString()
-    //         .substring(0, 1)
-    //         .toUpperCase() +
-    //     model.game.get(squareName).type.toUpperCase();
+    String pieceStr = piece.color.toString().substring(0, 1).toUpperCase() +
+        model.game.get(squareName).type.toUpperCase();
 
-    switch (piece) {
+    switch (pieceStr) {
       case "WP":
         imageToDisplay = WhitePawn(size: size);
         break;

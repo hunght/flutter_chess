@@ -1,5 +1,7 @@
+import 'package:chess_game/blocs/chess_board_bloc.dart';
 import 'package:chess_game/models/board_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'board_square.dart';
 
@@ -23,8 +25,9 @@ class ChessBoardRank extends StatelessWidget {
                 squareName: squareName,
                 boardModel: boardModel,
                 size: size,
-                isLightColor: null,
-                piece: null,
+                isLightColor:
+                    boardModel.game.square_color(squareName) == 'light',
+                piece: boardModel.game.get(squareName),
                 onAcceptMove: ({String from, String to}) {},
               ),
             )

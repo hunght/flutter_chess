@@ -29,10 +29,10 @@ class ChessBoardBloc extends Bloc<ChessBoardEvent, ChessBoardState> {
   Stream<ChessBoardState> _mapChessBoardFetchedToState() async* {
     yield ChessBoardLoadSussess(
       boardModel: BoardModel(
-        whiteSideTowardsUser: true,
-        enableUserMoves: true,
-        chessFEN: game.fen,
-      ),
+          whiteSideTowardsUser: true,
+          enableUserMoves: true,
+          chessFEN: game.fen,
+          game: game),
     );
   }
 
